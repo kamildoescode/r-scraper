@@ -16,7 +16,7 @@ class RScraper:
         :param console_log: enable console logging
         """
         if not console_log:
-            raise Exception('Parameter "console_log_enabled" not provided [True/False]')
+            raise ValueError('Parameter "console_log_enabled" not provided [True/False]')
 
         self.console_log = console_log
 

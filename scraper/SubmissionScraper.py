@@ -27,14 +27,24 @@ class SubmissionScraper(SubmissionScraperInterface):
             path = 'data/reddits.json'
 
             if not util.file_exists(path):
-                raise Exception("Either provide reddit URL list or ensure 'data/reddits.json' file exists")
+                raise ValueError("Either provide reddit URL list or ensure 'data/reddits.json' file exists")
 
             with open(path, 'r') as in_file:
                 in_data = json.load(in_file)
 
                 reddits = list()
                 for rdata in in_data['reddits']:
-                    reddits.append(''.join(['https://www.reddit.com/', rdata['data']['url']]))
+                    rel_url = rdata['data']['url']
+
+                    # parse those annoying / at the beginning and end
+
+                    if rel_url.startswith('/'):
+                        rel_url = rel_url[1:]
+
+                    if rel_url.endswith('/'):
+                        rel_url = rel_url[:-1]
+
+                    reddits.append(f'https://www.reddit.com/{rel_url}')
 
                 return reddits
 

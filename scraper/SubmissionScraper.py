@@ -36,17 +36,24 @@ class SubmissionScraper(SubmissionScraperInterface):
                 for rdata in in_data['reddits']:
                     rel_url = rdata['data']['url']
 
-                    # parse those annoying / at the beginning and end
-
-                    if rel_url.startswith('/'):
-                        rel_url = rel_url[1:]
-
-                    if rel_url.endswith('/'):
-                        rel_url = rel_url[:-1]
-
-                    reddits.append(f'https://www.reddit.com/{rel_url}')
+                    reddits.append(f'https://www.reddit.com/{parse_url(rel_url)}')
 
                 return reddits
+
+        def parse_url(url: str) -> str:
+            """
+            Parse url to get rid of / at the beginning and end
+            :param url: url to be passed
+            :return: url
+            """
+
+            if url.startswith('/'):
+                url = url[1:]
+
+            if url.endswith('/'):
+                url = url[:-1]
+
+            return url
 
         def _log(msg: str):
             print(f'[SubmissionScraper] {msg}')
